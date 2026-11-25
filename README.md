@@ -21,6 +21,10 @@ php artisan serve
 
 The administrator command prompts for the initial account details. Do not add a default password or demo administrator to the database.
 
+## Public demo accounts
+
+Set `DEMO_MODE=true` only for a public demo instance that contains fictional sample data. In this mode, `php artisan db:seed --force` creates sample centres, vaccines, children, guardians, and five role-specific demo accounts. The sign-in page displays each demo email and password and provides a one-click sign-in button. Anyone can use these accounts and change the shared sample workspace, so keep demo mode off anywhere real records are stored. Leave `DEMO_MODE=false` for operational deployments.
+
 ## Vercel deployment
 
 The repository includes a FrankenPHP `Dockerfile`, `Caddyfile`, `.dockerignore`, and `vercel.json` for Vercel's container runtime. Before deploying, configure a durable external PostgreSQL database and set the production `APP_KEY`, `APP_URL`, and `DB_*` variables in Vercel. The container includes the PostgreSQL PDO extension. Keep `APP_DEBUG=false` and use HTTPS.

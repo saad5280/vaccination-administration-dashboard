@@ -14,7 +14,11 @@ class AuthenticatedSessionController extends Controller
 {
     public function create(): View
     {
-        return view('auth.login');
+        return view('auth.login', [
+            'demoAccounts' => config('vaccination.demo_mode')
+                ? config('vaccination.demo_accounts')
+                : [],
+        ]);
     }
 
     public function store(Request $request): RedirectResponse

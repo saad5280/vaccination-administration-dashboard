@@ -32,7 +32,7 @@ class DemoWorkspaceSeeder extends Seeder
      */
     public function run(): void
     {
-        if (! app()->environment(['local', 'testing'])) {
+        if (! config('vaccination.demo_mode')) {
             return;
         }
 
