@@ -1,0 +1,14 @@
+@extends('layouts.portal')
+@section('title', 'Vaccination history')
+@section('crumb', 'Children / Vaccination history')
+@section('content')
+    <div class="page-heading"><div><p class="eyebrow">CHILD RECORD</p><h1>Vaccination history</h1><p class="muted">{{ $child->first_name }} {{ $child->last_name }} · <span class="mono-tag">{{ $child->registration_id }}</span></p></div><div class="heading-actions"><a class="button secondary" href="{{ route('children.show', $child) }}" wire:navigate>← Child profile</a>@can('vaccinations.record')<a class="button primary" href="{{ route('children.vaccinations.create', $child) }}" wire:navigate>＋ Record dose</a>@endcan</div></div>
+    <p class="clinical-note"><span>i</span> This history records administration details for programme operations. Status and schedule data do not make a clinical eligibility decision.</p>
+    <div class="table-card"><div class="table-toolbar"><div><strong>Administration records</strong><span class="subtle">{{ $records->total() }} records, including corrected entries</span></div></div><div class="table-scroll"><table><thead><tr><th>DATE / TIME</th><th>VACCINE</th><th>DOSE</th><th>PRODUCT / LOT</th><th>EXPIRY</th><th>CENTRE</th><th>ADMINISTERED BY</th><th>STATUS</th><th></th></tr></thead><tbody>
+        @forelse ($records as $record)
+            <tr><td>{{ $record->administered_at->format('M j, Y') }}<small class="table-secondary">{{ $record->administered_at->format('g:i A') }}</small></td><td><strong>{{ $record->vaccine->name }}</strong>@if ($record->scheduleDose)<small class="table-secondary">{{ $record->scheduleDose->schedule->name }} · {{ $record->scheduleDose->schedule->version }}</small>@endif</td><td>{{ $record->dose_number }}</td><td>{{ $record->product_name ?: 'Product not recorded' }}<small class="table-secondary">{{ $record->manufacturer ?: 'Manufacturer not recorded' }} · Lot {{ $record->lot_number ?: 'not recorded' }}</small></td><td>{{ $record->batch_expiry_date?->format('M j, Y') ?? 'Not recorded' }}</td><td>{{ $record->centre?->name ?? 'Not recorded' }}</td><td>{{ $record->administeredBy?->name ?? 'Unknown' }}</td><td><span class="status-pill {{ $record->status === 'completed' ? 'status-active' : 'status-inactive' }}"><i></i>{{ $record->status === 'superseded' ? 'Corrected' : ucfirst($record->status) }}</span>@if ($record->correction_reason)<small class="table-secondary">{{ $record->correction_reason }}</small>@endif</td><td class="actions">@can('vaccinations.amend')@if ($record->status === 'completed')<a href="{{ route('children.vaccinations.amend', [$child, $record]) }}" wire:navigate>Correct</a>@endif @endcan</td></tr>
+        @empty
+            <tr><td colspan="9" class="empty-state">No vaccination records are available for this child.</td></tr>
+        @endforelse
+    </tbody></table></div><div class="pagination-wrap">{{ $records->links() }}</div></div>
+@endsection

@@ -1,0 +1,15 @@
+.git
+.env
+.env.*
+!.env.example
+.agents
+.claude
+.codex
+.mcp.json
+AGENTS.md
+CLAUDE.md
+boost.json
+database/*.sqlite*
+node_modules
+tests
+vendor
