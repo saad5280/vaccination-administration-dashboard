@@ -19,7 +19,7 @@ php artisan app:create-administrator
 php artisan serve
 ```
 
-The administrator command prompts for the initial account details. Do not add a default password or demo administrator to the database.
+In operational mode, the administrator command prompts for the initial account details. Demo accounts are created only when `DEMO_MODE=true` is explicitly enabled.
 
 ## Public demo accounts
 
